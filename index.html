@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <title>Todo PWA | ilionx</title>
+        <link rel="stylesheet" href="/assets/styles.css">
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link href="https://fonts.googleapis.com/css?family=Muli:700" rel="stylesheet">
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+        <link rel="apple-touch-startup-image" href="/icons/android-chrome-512x512.png">
+        <link rel="mask-icon" href="/icons/RoundedIcon.png" color="#ffffff">
+        <link rel="manifest" href="/manifest.json">
+    </head>
+
+    <body>
+
+        <!-- Hier komt de todo lijst in -->
+        <div id="wrap">
+        </div>
+
+        <!-- Invoerveld / textarea -->
+        <div class="box blue">
+            <textarea id="blueInput"></textarea>
+            <hr>
+        </div>
+
+        <script>
+            
+            // Service Worker installeren
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
+
+            // TODO list ophalen uit local storage
+            var todoList = [];
+            var wrapEl = document.getElementById('wrap');
+            var inputElement = document.getElementById('blueInput');
+            if(localStorage.getItem('todoStorage')) {
+                //localStorage is altijd een string, dus JSON parsen om er een object van te maken
+                todoList = JSON.parse(localStorage.getItem('todoStorage'));
+                generateList(); 
+            }
+            
+            // 
+            function generateList() {
+                // loop door de todo lijst en daarna opslaan in localstorage als string
+                wrapEl.innerHTML = "";
+                for(let i in todoList) {
+                    newItem(i, todoList[i]);
+                }
+                localStorage.setItem('todoStorage',  JSON.stringify(todoList));
+            }
+            
+            // nieuw todo html element maken
+            function newItem(key, val) {
+                var newElement = document.createElement("div");
+                newElement.innerHTML = "<span id='" + key + "' class='remove'>X</span>  " + val;
+                newElement.classList.add("todoitem", "red"); 
+                wrapEl.appendChild(newElement);
+            }
+            
+            // event listener die naar enter kijkt
+            inputElement.addEventListener("keyup", function(event) {
+                if(event.which == 13 || event.which == 9) {
+                    addToList(inputElement.value);
+                    inputElement.value = "";
+                }
+            });
+
+            function addToList(val) {
+                todoList.push(val);
+                generateList();
+            }
+            
+
+            document.body.addEventListener("click", removeItem);
+            function removeItem(e) {
+                if(e.target.classList.contains("remove")) {
+                    e.target.parentNode.parentNode.removeChild(e.target.parentNode);
+                    let index = Number(e.target.id);
+                    todoList.splice(index, 1);
+                    generateList();
+                }
+            }
+
+        </script>
+        <noscript>
+            Javascript is required.
+        </noscript>
+    </body>
+</html>

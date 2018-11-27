@@ -1,0 +1,80 @@
+body {
+    font-family: Muli, sans-serif;
+    margin-top: 30px;
+    background-image: url('./bg2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: #01427c;
+}
+
+.box,
+hr,
+.todoitem {
+    width: 200px
+}
+
+button,
+input,
+select,
+textarea {
+    outline: 0
+}
+
+.box {
+    font-family: Muli, sans-serif;
+    max-width: 200px;
+    min-height: 200px;
+    margin: 0 auto 30px auto;
+    overflow: auto;
+    padding: 15px 20px;
+    color: #fff;
+    font-style: normal;
+    font-weight: 700;
+    position: relative;
+}
+
+.box.red {
+    background-color: #e52739
+}
+
+.box.blue {
+    background-color: #01427c
+}
+
+hr {
+    height: 4px;
+    background-color: #fff;
+    border: none;
+    bottom: 20px;
+    display: block;
+    position: absolute
+}
+
+
+textarea {
+    width: 100%;
+    background-color: inherit;
+    border: none;
+    height: 160px;
+    color: #fff;
+    font-size: 32px;
+    padding: 10px;
+    caret-color: #fff;
+}
+
+.todoitem {
+    padding: 10px 20px;
+    margin: 2px auto;
+    font-size: 24px;
+}
+
+.todoitem.red {
+    background-color: #e52739;
+    color: white;
+}
+
+.remove {
+    cursor: pointer;
+    padding-right: 8px;
+}
