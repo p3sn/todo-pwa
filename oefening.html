@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>Todo PWA | ilionx</title>
+        <link rel="stylesheet" href="/assets/styles.css">
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link href="https://fonts.googleapis.com/css?family=Muli:700" rel="stylesheet">
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+        <link rel="apple-touch-startup-image" href="/icons/android-chrome-512x512.png">
+        <link rel="mask-icon" href="/icons/RoundedIcon.png" color="#ffffff">
+        <link rel="manifest" href="/manifest.json">
+    </head>
+
+    <body>
+
+        <!-- Hier komt de todo lijst in -->
+        <div id="wrap">
+        </div>
+
+        <!-- Invoerveld / textarea -->
+        <div class="box blue">
+            <textarea id="blueInput"></textarea>
+            <hr>
+        </div>
+
+        <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-database.js"></script>
+        <script>
+
+            // Firebase
+            var uid;
+            var inputElement = document.getElementById('blueInput');
+            var config = {
+                apiKey: "AIzaSyBNkFZdgAfOIlrBHxNi_GR2mbst4DqNLJI",
+                authDomain: "<project-id>.firebaseapp.com",
+                databaseURL: "https://<project-id>.firebaseio.com",
+                projectId: "<project-id>"
+            };
+            firebase.initializeApp(config);
+            firebase.auth().signInAnonymously().catch(function (error) {
+                console.log(errorMessage);
+            });
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    // User heeft hier een anonieme ID gekregen
+                    var isAnonymous = user.isAnonymous;
+                    uid = user.uid;
+                    console.log('uid', uid);
+                    
+                    
+
+                    // event listener die naar enter kijkt om todo-item toe te voegen
+                    inputElement.addEventListener("keyup", function(event) {
+                        if(event.which == 13 || event.which == 9) {
+                            // voeg hier code toe om naar de database te schrijven.
+                            
+                            inputElement.value = "";
+                        }
+                    }); 
+                } else {
+                    console.log('no user');
+                }
+            });
+
+        </script>
+        <noscript>
+            Javascript is required.
+        </noscript>
+    </body>
+</html>
